@@ -1,4 +1,34 @@
-<html>
 
-bible api
-</html>
+<script>
+var url = window.location.href;
+var param = url.split("?")[1];
+var values = param.split("&");
+var version = values[0].split("=")[1];
+var book = values[1].split("=")[1];
+var bookNumber = 1; 
+var chapter = values[2].split("=")[1];
+var verse = values[3].split("=")[1];;
+var json_url = "http://192.168.1.70/bibleapi/"+version+"-version.json";
+
+
+loadDoc();
+
+function loadDoc() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+      displayVerse(this.responseText);
+    }
+  };
+  xhttp.open("GET", json_url, true);
+  xhttp.send();
+}
+
+function displayVerse(text){
+   var json_bible = JSON.parse(text);
+   var word = json_bible["version"][bookNumber]["book"][chapter]["chapter"][verse]["verse"];
+   document.write(word);
+}
+</script>
+
